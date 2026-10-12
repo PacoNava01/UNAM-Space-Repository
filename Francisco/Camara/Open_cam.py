@@ -21,7 +21,7 @@ FRAME_HEIGHT = 480
 FRAME_FPS = 30
 buffer_seconds = 5  # Duración del buffer en segundos
 
-ruta_almacenado = Path(__file__).parent
+
 
 def init_camera():
     """Inicializa Picamera2 si está disponible; de lo contrario, USB."""
@@ -122,9 +122,13 @@ if __name__ == "__main__":
     
     # Prueba de la cámara
     camera, camera_type = init_camera()
+
+    #Congiguramos el buffer de frames para guardar un video de prueba
     fps = int(camera.get(cv2.CAP_PROP_FPS)) or FRAME_FPS
     max_frames = fps * buffer_seconds
     buffer = deque(maxlen=max_frames) #Creamos el buffer circular con los frames de la camara o posibles 30 fps
+
+
     while True:
         frame = capture_frame(camera, camera_type)
 
