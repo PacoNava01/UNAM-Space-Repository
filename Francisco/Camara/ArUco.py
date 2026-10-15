@@ -201,10 +201,30 @@ def draw_pose(frame,corners,ids,poses,
 
         cv2.putText(frame,f"P:{pitch:.0f} R:{roll:.0f} Y:{yaw:.0f}",
             tuple(corner + [0, -10]),
-            cv2.FONT_HERSHEY_SIMPLEX,0.45,(0, 255, 255),1)
+            cv2.FONT_HERSHEY_SIMPLEX,0.45,(0, 255, 0),2)
 
     return frame
+
+def Aruco_center(frame,corners):
+    for corner in corners:
+        # Cada marcador tiene 4 esquinas
+        pts = corner[0]
+        # Calcular centro como promedio de las esquinas
+        cx = int(pts[:,0].mean())
+        cy = int(pts[:,1].mean())
+
+        # Dibujar marcador y centro
+        cv2.circle(frame, (cx, cy), 10, (0,0,255), -1)
+        cv2.putText(frame, f"Centro: {cx},{cy}", (cx+50, cy),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 2)
+
+        return frame,cx,cy
+            
+
+        #Cada marcador tiene 4 
 # ============================================================
+
+
 
 
 if __name__ == "__main__":
@@ -241,6 +261,7 @@ if __name__ == "__main__":
             frame = draw_pose(frame,corners,ids,poses,
                               MARKER_LENGTH,CAMERA_MATRIX,
                               DIST_COEFFS)
+            frame,_,_ = Aruco_center(frame,corners)
 
             
         cv2.imshow("Cámara", frame)
